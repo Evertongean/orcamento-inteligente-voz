@@ -18,7 +18,7 @@ spring:
 
   ai:
     openai:
-      api-key: "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"
+      api-key: "OPENAI_API_KEY"
       model: gpt-4o-mini
       audio:
         transcription:
