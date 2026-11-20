@@ -48,6 +48,8 @@ O endpoint recebe um arquivo de áudio e o encaminha ao serviço de transcriçã
 - Geração de áudio para a resposta, retornado em Base64.
 - Listagem das transações persistidas.
 
+📚 **Documentação completa:** [Acessar Wiki](https://github.com/Evertongean/orcamento-inteligente-voz/wiki)
+
 ## 📂 Estrutura do Projeto
 
 ~~~text
@@ -81,82 +83,3 @@ O endpoint recebe um arquivo de áudio e o encaminha ao serviço de transcriçã
 ├── pom.xml
 └── README.md
 ~~~
-
-## ⚙️ Como Executar o Projeto
-
-### Pré-requisitos
-
-- Java 17 ou compatível com a versão configurada no pom.xml.
-- Maven instalado e disponível no terminal.
-- Uma chave de API da OpenAI com acesso aos modelos configurados.
-
-> O repositório não contém Maven Wrapper (mvnw/mvnw.cmd); utilize o Maven instalado localmente.
-
-### Configuração da OpenAI
-
-Defina a chave como variável de ambiente. O nome abaixo segue o mapeamento de propriedades do Spring Boot e substitui a configuração de spring.ai.openai.api-key sem expor o segredo no repositório:
-
-~~~bash
-export SPRING_AI_OPENAI_API_KEY="sua_chave_da_openai"
-~~~
-
-No Windows PowerShell:
-
-~~~powershell
-$env:SPRING_AI_OPENAI_API_KEY="sua_chave_da_openai"
-~~~
-
-As configurações atuais estão em [src/main/resources/application.yml](src/main/resources/application.yml): porta 8080, H2 em memória (orcamentodb), console H2 em /h2-console, GPT-4o-mini, Whisper whisper-1 e TTS tts-1 com voz alloy.
-
-### Instalação e execução
-
-~~~bash
-# Baixa as dependências, compila e instala o projeto
-mvn clean install
-
-# Inicia a aplicação
-mvn spring-boot:run
-~~~
-
-Com a aplicação em execução, a API fica disponível em http://localhost:8080.
-
-## 🔌 Endpoints da API
-
-| Método | Rota | Descrição |
-| --- | --- | --- |
-| POST | /api/transacoes/comando-voz | Recebe um arquivo de áudio no campo multipart file, processa o comando e retorna transcrição, resposta textual e áudio em Base64. |
-| GET | /api/transacoes | Lista todas as transações persistidas. |
-
-### Processar comando por voz
-
-~~~bash
-curl --request POST "http://localhost:8080/api/transacoes/comando-voz" \
-  --form "file=@./comando.mp3"
-~~~
-
-Exemplo de estrutura da resposta:
-
-~~~json
-{
-  "textoTranscrito": "Registre uma despesa de 25 reais com transporte",
-  "respostaTexto": "Transação registrada com sucesso.",
-  "audioBase64": "..."
-}
-~~~
-
-### Listar transações
-
-~~~bash
-curl "http://localhost:8080/api/transacoes"
-~~~
-
-## 🔮 Possíveis Melhorias Futuras
-
-- Adicionar validação de tipo e tamanho dos arquivos de áudio recebidos.
-- Persistir os dados em um banco relacional externo para além do ciclo de vida da aplicação.
-- Incluir autenticação e isolamento das transações por usuário.
-- Criar testes automatizados para os fluxos de serviços, ferramentas e endpoints.
-
-## 👨‍💻 Autor
-
-Desenvolvido por [Everton Gean](https://github.com/Evertongean).
